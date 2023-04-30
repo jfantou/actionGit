@@ -9791,19 +9791,16 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(6024);
 const github = __nccwpck_require__(5016);
+const fs = __nccwpck_require__(7147);
 
 try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+    //We need to parse the json file to have the list of repository to update
+    var listRepository = JSON.parse("/resources/manifest.json");
+    console.log(listRepository);
 } catch (error) {
-  core.setFailed(error.message);
+   console.log(error);
 }
+
 })();
 
 module.exports = __webpack_exports__;

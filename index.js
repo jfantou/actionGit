@@ -1,15 +1,28 @@
+const { exec } = require('child_process');
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
 
 try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+    //We need to parse the json file to have the list of repository to update
+    var listRepository = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+    for (const index in listRepository){
+        console.log(listRepository[index].repo);
+        executeShell(listRepository[index].repo);
+
+    }
+
 } catch (error) {
-  core.setFailed(error.message);
+   core.setFailed(error.message);
+}
+
+function executeShell(repoName){
+    var yourscript = exec('sh test.sh ' + repoName,
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+            }
+        });
 }
