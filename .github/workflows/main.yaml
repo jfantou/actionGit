@@ -15,12 +15,11 @@ jobs:
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Use the obtained token
         run: |
-               echo " token value: " ${TOKEN}
-               curl -L \
+                curl -L \
                 -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Token ${TOKEN}"\
+                -H "Authorization: Bearer $TOKEN"\
                 -H "X-GitHub-Api-Version: 2022-11-28" \
-                https://api.github.com/orgs/orgjerome2/repos
+                https://api.github.com/user/installations
         env:
           TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Hello world action step
