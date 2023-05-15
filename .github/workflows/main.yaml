@@ -24,10 +24,10 @@ jobs:
         env:
           TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Checkout tools repo
-        uses: actions/checkout@v3
-        with:
-          repository: orgjerome2/test2
-          path: test2
+        run: |
+          git https://jfantou:${TOKEN}@https://github.com/orgjerome2/test2.git 
+        env:
+          TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Hello world action step
         id: hello
         uses: jfantou/actionGit@v1.2
