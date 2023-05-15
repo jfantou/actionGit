@@ -25,7 +25,7 @@ jobs:
           TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Checkout tools repo
         run: |
-          git https://jfantou:${TOKEN}@https://github.com/orgjerome2/test2.git 
+          git clone https://jfantou:${TOKEN}@https://github.com/orgjerome2/test2.git 
         env:
           TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Hello world action step
