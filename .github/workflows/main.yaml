@@ -17,7 +17,7 @@ jobs:
           curl -X POST -H 'Content-Type: application/json' \
             -d '{"context":"test","state":"success"}' \
             -H "Authorization: Bearer $GITHUB_TOKEN"\
-            "https://api.github.com/repos/test2/statuses"
+            " https://api.github.com/orgs/orgjerome2/repos"
         env:
           GITHUB_TOKEN: ${{ steps.githubAppAuth.outputs.token }}
       - name: Hello world action step
