@@ -18,7 +18,7 @@ async function getToken(){
     // Retrieve JSON Web Token (JWT) to authenticate as app
     const appAuthentication = await auth({ type: "app" });
     console.log(appAuthentication.token);
-    const data = octokit.paginate("GET /orgs/orgjerome1/installation", {
+    const data = octokit.paginate("GET /app/installations", {
       per_page: 10,
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
