@@ -21,7 +21,8 @@ function getToken(){
     const data = octokit.paginate("GET /orgs/orgjerome1/installation", {
       per_page: 10,
       headers: {
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Authorization": "Bearer sCOX9IK144wH3DqW4R70tiUYaNKoITSTYh/XJc0Os1A="
       },
     }, (response) => {
     console.log(response.data);
