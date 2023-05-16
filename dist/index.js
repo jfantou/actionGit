@@ -40278,7 +40278,7 @@ async function getToken(){
     // Retrieve JSON Web Token (JWT) to authenticate as app
     const appAuthentication = await auth({ type: "app" });
     console.log(appAuthentication.token);
-    const data = octokit.paginate("GET /app/installations", {
+    octokit.paginate("GET /app/installations", {
       per_page: 10,
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
@@ -40298,7 +40298,7 @@ async function getToken(){
 function parseYAMLConfiguration  (configuration){
     for (var index in configuration){
         var token = getToken();
-        executeShellForAllRepository(configuration[index].owner, token)
+        //executeShellForAllRepository(configuration[index].owner, token)
     }
 }
 
