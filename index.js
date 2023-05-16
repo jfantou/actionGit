@@ -6,34 +6,18 @@ const readYamlFile = require('read-yaml-file');
 const { Octokit } = require("@octokit/rest");
 const octokit = new Octokit({ });
 
-function getToken(){
+const auth = createAppAuth({
+  appId: 333730,
+  privateKey: core.getInput('privateKey'),
+  clientId: "Iv1.72ddee10ccf4895e",
+  clientSecret: "6a0f566f9e6221a83895e00747be33bb32e3c39d",
+});
+
+async function getToken(){
   try{
-     var appOctokit = new Octokit({
-      authStrategy: createAppAuth,
-      auth: {
-        appId: core.getInput('appId'),
-        privateKey: core.getInput('privateKey'),
-      }
-    });
-
-    console.log("retrieve installation")
-   
-    const data = octokit.paginate("GET /orgs/orgjerome1/installation", {
-      per_page: 10,
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Authorization": "Token sCOX9IK144wH3DqW4R70tiUYaNKoITSTYh/XJc0Os1A="
-      },
-    }, (response) => {
-    console.log(response.data);
-    });
-
-    const resp = appOctokit.auth({
-      type: 'installation',
-      installationId: data[0].id,
-    });
-
-    return resp.token;
+    // Retrieve JSON Web Token (JWT) to authenticate as app
+    const appAuthentication = await auth({ type: "app" });
+    console.log(appAuthentication);
 
   } catch (error){
     core.setFailed(error.message);
