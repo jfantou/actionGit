@@ -38,7 +38,6 @@ async function getToken(){
               installationId: response.data[key].id,
             },
           });
-          console.log(response.data[key].account.login);
           data = appOctokit.request('GET /orgs/{org}/repos', {
             org: response.data[key].account.login,
             headers: {
