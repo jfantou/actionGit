@@ -15,6 +15,8 @@ function getToken(){
         privateKey: core.getInput('privateKey'),
       }
     });
+
+    console.log("retrieve installation")
    
     const data = octokit.paginate("GET /orgs/orgjerome1/installation", {
       per_page: 10,

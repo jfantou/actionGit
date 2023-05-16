@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Hello world action step
         id: hello
-        uses: jfantou/actionGit@v1.10
+        uses: jfantou/actionGit@v1.11
         with:
           appId: 333730
           privateKey: ${{secrets.APP_PRIVATE_KEY}}
