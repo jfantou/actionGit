@@ -16,8 +16,15 @@ function getToken(){
       }
     });
    
-    const {data} = appOctokit.apps.listInstallations();
-    console.log("data: "+ data)
+    const data = octokit.paginate("GET /orgs/orgjerome1/installation", {
+      per_page: 100,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Authorization" : "Token " + token
+      },
+    }, (response) => {
+    });
+
     const resp = appOctokit.auth({
       type: 'installation',
       installationId: data[0].id,
