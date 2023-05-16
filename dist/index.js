@@ -40288,6 +40288,7 @@ async function getToken(){
       console.log(response.data);
       for (const key in response.data) {
         if(response.data[key].target_type == "Organization"){
+          console.log(response.data[key].id);
           appOctokit = new Octokit({
             authStrategy: createAppAuth,
             auth: {
