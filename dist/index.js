@@ -40285,28 +40285,25 @@ async function getToken(owner){
         "Authorization": "Bearer " + appAuthentication.token
       },
     }, (response) => {
-      for (const key in response.data){
-        if(response.data[key].target_type == "Organization" && response.data[key].account.login == owner){
-          appOctokit = new Octokit({
-            authStrategy: createAppAuth,
-            auth: {
-              appId: 333730,
-              privateKey: core.getInput('privateKey'),
-              // optional: this will make appOctokit authenticate as app (JWT)
-              //           or installation (access token), depending on the request URL
-              installationId: response.data[key].id,
-            },
-          });
-           resp =  appOctokit.auth({
-            type: "installation",
-            // defaults to `options.auth.installationId` set in the constructor
-            installationId: 123,
-          });
-          console.log(resp.token)
-          return token;
+      console.log(response.data);
+    });
+
+    octokit.paginate("GET /orgs/orgjerome2/repos", {
+      org: owner,
+      per_page: 100,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Authorization" : "Bearer " + appAuthentication.token
+      },
+    }, (response) => {
+      console.log("Number of repository to update: " + response.data.length);
+      //We need to get each data to get the name and the default branch of the repository
+      for (const key in response.data) {
+        if(response.data[key].name != ".github" && response.data[key].name != "repository_management" && !response.data[key].archived){
+          console.log("Repository to update: " + response.data[key].name);
+          //executeShell(owner, response.data[key].name, pathYaml, response.data[key].default_branch, token);
         }
       }
-      console.log(response.data);
     });
 
     return appAuthentication.token;
@@ -40318,7 +40315,7 @@ async function getToken(owner){
 
 function parseYAMLConfiguration  (configuration){
     for (var index in configuration){
-        var token = getToken(configuration[index].owner);
+        var token = getToken();
         //executeShellForAllRepository(configuration[index].owner, token)
     }
 }
