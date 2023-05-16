@@ -4,9 +4,7 @@ const core = require('@actions/core');
 const {createAppAuth} = require("@octokit/auth-app");
 const readYamlFile = require('read-yaml-file');
 const { Octokit } = require("@octokit/rest");
-const octokit = new Octokit({
-  baseUrl: 'https://github.com/api/v3'
-});
+const octokit = new Octokit({ });
 
 function getToken(){
   try{
@@ -15,8 +13,7 @@ function getToken(){
       auth: {
         appId: core.getInput('appId'),
         privateKey: core.getInput('privateKey'),
-      },
-      baseUrl: 'https://github.com/api/v3',
+      }
     });
    
     const {data} = appOctokit.apps.listInstallations();

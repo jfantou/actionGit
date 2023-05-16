@@ -40264,9 +40264,7 @@ const core = __nccwpck_require__(6024);
 const {createAppAuth} = __nccwpck_require__(5331);
 const readYamlFile = __nccwpck_require__(6142);
 const { Octokit } = __nccwpck_require__(7276);
-const octokit = new Octokit({
-  baseUrl: 'https://github.com/api/v3'
-});
+const octokit = new Octokit({ });
 
 function getToken(){
   try{
@@ -40275,8 +40273,7 @@ function getToken(){
       auth: {
         appId: core.getInput('appId'),
         privateKey: core.getInput('privateKey'),
-      },
-      baseUrl: 'https://github.com/api/v3',
+      }
     });
    
     const {data} = appOctokit.apps.listInstallations();
