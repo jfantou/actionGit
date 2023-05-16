@@ -17,7 +17,7 @@ function getToken(){
     });
    
     const {data} = appOctokit.apps.listInstallations();
-
+    console.log("data: "+ data)
     const resp = appOctokit.auth({
       type: 'installation',
       installationId: data[0].id,
