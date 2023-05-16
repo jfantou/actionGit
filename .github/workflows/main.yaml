@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: jfantou/actionGit@v1.4
+        uses: jfantou/actionGit@v1.5
         with:
           appId: 333730
           privateKey: ${{secrets.APP_PRIVATE_KEY}}

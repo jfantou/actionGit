@@ -1,8 +1,5 @@
 const fs = require("fs");
 const {exec} = require("node:child_process");
-const baseUrl = 'github.com';
-const commonYmlPath = 'resources/yaml/common/';
-const sokYmlPath = 'resources/yaml/sok/';
 const core = require('@actions/core');
 const {createAppAuth} = require("@octokit/auth-app");
 const readYamlFile = require('read-yaml-file');
@@ -22,21 +19,15 @@ function getToken(){
       baseUrl: 'https://github.com/api/v3',
     });
    
-    //TO-DO: Retrieve installationId (of the specific organization)
-    appOctokit.request('GET /app/installations', {
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    }, (response) => {
-      console.log("Number installation: " + response.data.length);
-    });
+    const {data} = appOctokit.apps.listInstallations();
 
-    var resp = appOctokit.auth({
+    const resp = appOctokit.auth({
       type: 'installation',
       installationId: data[0].id,
     });
-    console.log(resp.token);
+
     return resp.token;
+
   } catch (error){
     core.setFailed(error.message);
   }
@@ -44,14 +35,7 @@ function getToken(){
 
 function parseYAMLConfiguration  (configuration){
     for (var index in configuration){
-        if(configuration[index].owner=='SOK'){
-          var token = getToken();
-          //executeShellForAllRepository(configuration[index].owner, sokYmlPath, token);          
-        } else {
-          var token = getToken();
-          console.log(configuration[index].owner)
-          //executeShellForAllRepository(configuration[index].owner, commonYmlPath, token);
-        }
+        var token = getToken();
     }
 }
 
