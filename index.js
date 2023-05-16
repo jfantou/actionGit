@@ -13,7 +13,7 @@ const auth = createAppAuth({
   clientSecret: "6a0f566f9e6221a83895e00747be33bb32e3c39d",
 });
 
-async function getToken(){
+async function getToken(owner){
   try{
     // Retrieve JSON Web Token (JWT) to authenticate as app
     const appAuthentication = await auth({ type: "app" });
@@ -25,6 +25,27 @@ async function getToken(){
         "Authorization": "Bearer " + appAuthentication.token
       },
     }, (response) => {
+      for (const key in response.data){
+        if(response.data[key].target_type == "Organization" && response.data[key].account.login == owner){
+          appOctokit = new Octokit({
+            authStrategy: createAppAuth,
+            auth: {
+              appId: 333730,
+              privateKey: core.getInput('privateKey'),
+              // optional: this will make appOctokit authenticate as app (JWT)
+              //           or installation (access token), depending on the request URL
+              installationId: response.data[key].id,
+            },
+          });
+           resp =  appOctokit.auth({
+            type: "installation",
+            // defaults to `options.auth.installationId` set in the constructor
+            installationId: 123,
+          });
+          console.log(resp.token)
+          return token;
+        }
+      }
       console.log(response.data);
     });
 
@@ -37,7 +58,7 @@ async function getToken(){
 
 function parseYAMLConfiguration  (configuration){
     for (var index in configuration){
-        var token = getToken();
+        var token = getToken(configuration[index].owner);
         //executeShellForAllRepository(configuration[index].owner, token)
     }
 }
