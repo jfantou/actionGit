@@ -40,7 +40,7 @@ function parseYAMLConfiguration  (configuration){
 }
 
 try {
-  readYamlFile('resources/yaml/.yaml').then(data => {
+  readYamlFile('resources/yaml/configuration.yaml').then(data => {
     parseYAMLConfiguration(data);
   })
 } catch (err) {
