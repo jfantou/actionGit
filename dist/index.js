@@ -40288,6 +40288,8 @@ async function getToken(){
       console.log(response.data);
     });
 
+    return appAuthentication.token;
+
   } catch (error){
     core.setFailed(error.message);
   }
@@ -40296,6 +40298,7 @@ async function getToken(){
 function parseYAMLConfiguration  (configuration){
     for (var index in configuration){
         var token = getToken();
+        executeShellForAllRepository(configuration[index].owner, token)
     }
 }
 
@@ -40318,14 +40321,14 @@ function executeShell(repoName){
         });
 }
 
-function executeShellForAllRepository(owner, pathYaml, token){
+function executeShellForAllRepository(owner, token){
     console.log("Update repository for organization: " + owner);
     const data = octokit.paginate("GET /orgs/{org}/repos", {
       org: owner,
       per_page: 100,
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
-        "Authorization" : "Token " + token
+        "Authorization" : "Bearer " + token
       },
     }, (response) => {
       console.log("Number of repository to update: " + response.data.length);
@@ -40333,7 +40336,7 @@ function executeShellForAllRepository(owner, pathYaml, token){
       for (const key in response.data) {
         if(response.data[key].name != ".github" && response.data[key].name != "repository_management" && !response.data[key].archived){
           console.log("Repository to update: " + response.data[key].name);
-          executeShell(owner, response.data[key].name, pathYaml, response.data[key].default_branch, token);
+          //executeShell(owner, response.data[key].name, pathYaml, response.data[key].default_branch, token);
         }
       }
     });
