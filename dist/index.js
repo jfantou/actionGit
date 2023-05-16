@@ -40273,7 +40273,7 @@ const auth = createAppAuth({
   clientSecret: "6a0f566f9e6221a83895e00747be33bb32e3c39d",
 });
 
-async function getToken(owner){
+async function getToken(){
   try{
     // Retrieve JSON Web Token (JWT) to authenticate as app
     const appAuthentication = await auth({ type: "app" });
@@ -40285,28 +40285,28 @@ async function getToken(owner){
         "Authorization": "Bearer " + appAuthentication.token
       },
     }, (response) => {
-      console.log(response.data);
-    });
-
-    octokit.paginate("GET /orgs/orgjerome2/repos", {
-      org: owner,
-      per_page: 100,
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Authorization" : "Bearer " + appAuthentication.token
-      },
-    }, (response) => {
-      console.log("Number of repository to update: " + response.data.length);
-      //We need to get each data to get the name and the default branch of the repository
       for (const key in response.data) {
-        if(response.data[key].name != ".github" && response.data[key].name != "repository_management" && !response.data[key].archived){
-          console.log("Repository to update: " + response.data[key].name);
-          //executeShell(owner, response.data[key].name, pathYaml, response.data[key].default_branch, token);
+        if(response.data[key].target_type == "Organization"){
+          appOctokit = new Octokit({
+            authStrategy: createAppAuth,
+            auth: {
+              appId: 333730,
+              privateKey: core.getInput('privateKey'),
+              // optional: this will make appOctokit authenticate as app (JWT)
+              //           or installation (access token), depending on the request URL
+              installationId: response.data[key].id,
+            },
+          });
+          data = appOctokit.request('GET /orgs/{org}/repos', {
+            org: response.data[key].account.login,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+          console.log(data);
         }
       }
     });
-
-    return appAuthentication.token;
 
   } catch (error){
     core.setFailed(error.message);
