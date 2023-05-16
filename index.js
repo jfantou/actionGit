@@ -25,10 +25,10 @@ async function getToken(){
         "Authorization": "Bearer " + appAuthentication.token
       },
     }, (response) => {
-      console.log(response.data);
       for (const key in response.data) {
         if(response.data[key].target_type == "Organization"){
           console.log(response.data[key].id);
+          console.log(response.data[key].account.login);
           appOctokit = new Octokit({
             authStrategy: createAppAuth,
             auth: {
@@ -45,6 +45,7 @@ async function getToken(){
               'X-GitHub-Api-Version': '2022-11-28'
             }
           });
+          console.log(data)
         }
       }
     });
