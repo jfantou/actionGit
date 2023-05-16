@@ -40304,8 +40304,9 @@ async function getToken(){
             headers: {
               'X-GitHub-Api-Version': '2022-11-28'
             }
+          }, (response) => {
+            console.log(response.data)
           });
-          console.log(data)
         }
       }
     });
